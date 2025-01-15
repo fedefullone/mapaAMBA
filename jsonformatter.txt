@@ -289,8 +289,10 @@
       }
     },
 {
-  "type": "Polygon",
-  "coordinates": [
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
     [
       [
         -58.61926899899998,
@@ -361,16 +363,16 @@
         -34.68427584550135
       ]
     ]
-  ],
+  ]},
   "properties": {
     "index": 17,
     "NAME_1": "La Matanza Norte",
-    "ISO": 6427,
-    "cod_provincia": "06",
-    "coddepto": "427",
-    "codprov": "06",
+    "ISO": 600000,
+    "cod_provincia": "59595959",
+    "coddepto": "29292",
+    "codprov": "82828282",
     "provincia": "La Matanza Norte",
-    "cantidad": 38341,
+    "cantidad": 29299292,
     "amba": 1,
     "precioHub": 6175,
     "precioIntralog": 8507,
@@ -379,8 +381,10 @@
   }
 },
 {
-  "type": "Polygon",
-  "coordinates": [
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
     [
       [
         -58.61926899899998,
@@ -467,9 +471,9 @@
         -34.827223131183565
       ]
     ]
-  ],
+  ]},
   "properties": {
-    "index": 17,
+    "index": 100000,
     "NAME_1": "La Matanza Sur",
     "ISO": 6427,
     "cod_provincia": "06",
@@ -1720,7 +1724,7 @@
         "amba": 1,
 	"precioHub": 8507,
    	"precioIntralog": 6175,
-    	"CordonCABA": 4,
+    	"CordonCABA": 3,
     	"CordonGarin": 2
       }
     },

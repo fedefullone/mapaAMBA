@@ -30,33 +30,57 @@
             .then(data => {
                 // Carga y renderización del GeoJSON
                 L.geoJSON(data, {
-                    style: {
-                        color: "#3388ff",
-                        weight: 2,
-                        opacity: 0.7,
-                    },
+                    // style: {
+                    //     color: "#3388ff",
+                    //     weight: 2,
+                    //     opacity: 0.7,
+                    // },
                     onEachFeature: (feature, layer) => {
-                        // Evento al pasar el mouse
-                        layer.on('mouseover', (e) => {
-                            const props = feature.properties;
-                            const popupContent = `
-                                <b>Partido:</b> ${props.provincia || "N/A"}<br>
-                                <b>Costo HUB CABA:</b> $ ${props.precioHub || "N/A"}<br>
-                                <b>Costo GARIN:</b> $ ${props.precioIntralog || "N/A"}<br>
-                                <b>Cordon desde CABA:</b> ${props.CordonCABA || "N/A"}<br>
-                                <b>Cordon desde GARIN:</b> ${props.CordonGarin || "N/A"}<br>
-                            `;
-                            const popup = L.popup()
-                                .setLatLng(e.latlng)
-                                .setContent(popupContent)
-                                .openOn(map);
-                        });
+    // Evento al pasar el mouse
+    layer.on('mouseover', (e) => {
+        const props = feature.properties;
+        const popupContent = `
+            <b>Partido:</b> ${props.provincia || "N/A"}<br>
+            <b>Costo HUB CABA:</b> $ ${props.precioHub || "N/A"}<br>
+            <b>Costo GARIN:</b> $ ${props.precioIntralog || "N/A"}<br>
+            <b>Cordon desde CABA:</b> ${props.CordonCABA || "N/A"}<br>
+            <b>Cordon desde GARIN:</b> ${props.CordonGarin || "N/A"}<br>
+        `;
+        const popup = L.popup()
+            .setLatLng(e.latlng)
+            .setContent(popupContent)
+            .openOn(map);
+    });
 
-                        // Cierra el popup cuando el mouse sale
-                        layer.on('mouseout', () => {
-                            map.closePopup();
-                        });
-                    }
+    // Cierra el popup cuando el mouse sale
+    layer.on('mouseout', () => {
+        map.closePopup();
+    });
+},
+style: (feature) => {
+    // Dynamically determine color based on CordonCABA
+    const cordonCABA = feature.properties.CordonCABA;
+
+    let color;
+    if (cordonCABA === 1) {
+        color = "#ff0000"; // Red
+    } else if (cordonCABA === 2) {
+        color = "#ffa500"; // Orange
+    } else if (cordonCABA === 3) {
+        color = "#ffff00"; // Yellow
+    } 
+    else if (cordonCABA === 4) {
+        color = "#e834eb"; // rosa
+    } else {
+        color = "#3388ff"; // Default blue
+    }
+
+    return {
+        color: color,
+        weight: 3,
+        opacity: 1,
+    };
+}
                 }).addTo(map);
             })
             .catch(error => console.error('Error al cargar el GeoJSON:', error));
