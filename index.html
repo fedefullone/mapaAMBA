@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa AMBA</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicialización del mapa
+        const map = L.map('map').setView([-34.617, -58.445], 10);
+
+        // Capa base del mapa
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Carga del archivo GeoJSON
+        fetch('jsonformatter.txt') // Ruta al archivo GeoJSON
+            .then(response => response.json())
+            .then(data => {
+                // Carga y renderización del GeoJSON
+                L.geoJSON(data, {
+                    style: {
+                        color: "#3388ff",
+                        weight: 2,
+                        opacity: 0.7,
+                    },
+                    onEachFeature: (feature, layer) => {
+                        // Evento al pasar el mouse
+                        layer.on('mouseover', (e) => {
+                            const props = feature.properties;
+                            const popupContent = `
+                                <b>Partido:</b> ${props.provincia || "N/A"}<br>
+                                <b>Costo HUB CABA:</b> $ ${props.precioHub || "N/A"}<br>
+                                <b>Costo GARIN:</b> $ ${props.precioIntralog || "N/A"}<br>
+                                <b>Cordon desde CABA:</b> ${props.CordonCABA || "N/A"}<br>
+                                <b>Cordon desde GARIN:</b> ${props.CordonGarin || "N/A"}<br>
+                            `;
+                            const popup = L.popup()
+                                .setLatLng(e.latlng)
+                                .setContent(popupContent)
+                                .openOn(map);
+                        });
+
+                        // Cierra el popup cuando el mouse sale
+                        layer.on('mouseout', () => {
+                            map.closePopup();
+                        });
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error al cargar el GeoJSON:', error));
+    </script>
+</body>
+</html>
